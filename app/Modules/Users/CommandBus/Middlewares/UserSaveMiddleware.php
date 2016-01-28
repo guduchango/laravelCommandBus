@@ -17,6 +17,8 @@ class UserRequestMiddleware implements Middleware
         $this->user = $user;
         $this->posts = $posts;
 
+        return $next($command);
+
     }
 
 }

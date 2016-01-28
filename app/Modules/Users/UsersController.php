@@ -6,19 +6,15 @@ use Uuid;
 use App\User;
 use App\Http\Requests;
 use Illuminate\Http\Request;
-use Dingo\Api\Routing\Helpers;
 use App\Http\Controllers\Controller;
-use App\Transformers\UserTransformer;
 use Joselfonseca\LaravelTactician\CommandBusInterface;
 use App\Modules\Users\CommandBus\UserCommand;
 use App\Modules\Users\CommandBus\UserHandler;
 use App\Modules\Users\CommandBus\Middlewares\UserSaveMiddleware;
-
+use App\Modules\Users\CommandBus\Middlewares\UserRequestMiddleware;
 
 class UsersController extends Controller
 {
-    use Helpers;
-
     protected $bus;
 
     public function __construct(CommandBusInterface $bus){
@@ -32,9 +28,8 @@ class UsersController extends Controller
      */
     public function index()
     {
-      echo route('api.users.store');
-      exit();
-        return $this->response->paginator(User::paginate(10), new UserTransformer());
+      $users= User::all();
+      return response()->json($users,200);
     }
 
     /**
@@ -45,35 +40,24 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-       $request = $request->all();
+      $request = $request->all();
 
-      return json_encode("hola");
-      /* exit();
+      $this->bus->addHandler(UserCommand::class, UserHandler::class);
 
-      $this->$bus->addHandler(UserCommand::class, UserHandler::class);
 
-      $command = $this->dispatch(
-      UserCommand::class,
-      [
-         'request' => $request
-     ],
-     [
-         UserSaveMiddleware::class
-     ]);
+      $command = $this->bus->dispatch(
+        UserCommand::class,
+          [
+           'request' => $request
+         ],
+         [
+           UserRequestMiddleware::class
+         ]
+       );
 
-      $command = $this->services->bus->dispatch(\Joselfonseca\Mcs\CalculateShirtPrice\CalculateShirtPriceCommand::class, [
-         'mts' => 1.5,
-         'fabricSku' => 'RET490'
-     ], [
-         \Joselfonseca\Mcs\CalculateShirtPrice\Middleware\CalculateFabricPrice::class
-     ]);
-     $this->assertEquals(3750, $command->fabricPrice);
+       print_r($command->user);
+       exit();
 
-        $data = $request->except('password_confirmation');
-        $data['password'] = bcrypt($data['password']);
-        $data['uuid'] = Uuid::generate(4)->string;
-        $user = User::create($data);
-        return $this->response->item($user, new UserTransformer());*/
     }
 
     /**

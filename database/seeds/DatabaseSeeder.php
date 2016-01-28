@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use App\User;
+use App\Post;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,10 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+      DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         Model::unguard();
-        factory(\App\User::class, 5)->create()->each(function($user){
-            $user->posts()->saveMany(factory(\App\Post::class, 10)->make());
-        });
+
+          $this->call('UsersTableSeeder');
+          $this->call('PostsTableSeeder');
+
         Model::reguard();
+     DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

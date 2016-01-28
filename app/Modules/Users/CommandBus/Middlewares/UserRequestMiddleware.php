@@ -2,7 +2,6 @@
 
 namespace App\Modules\Users\CommandBus\Middlewares;
 
-use League\Container\Container;
 use League\Tactician\Middleware;
 
 class UserRequestMiddleware implements Middleware
@@ -14,10 +13,10 @@ class UserRequestMiddleware implements Middleware
         $user = $request['data']['attributes'];
         $posts = $request['included'];
 
-        $this->user = $user;
-        $this->posts = $posts;
+        $command->user = $user;
+        $command->posts = $posts;
 
-        return $command;
+        return $next($command);
     }
 
 }

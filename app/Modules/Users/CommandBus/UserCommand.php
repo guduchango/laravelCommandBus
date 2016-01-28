@@ -6,15 +6,16 @@ use App\User;
 
 class UserCommand {
 
-  protected $request = [];
+  public $request = [];
 
-  protected $user = [];
+  public $user = [];
 
-  protected $posts = [];
+  public $posts = [];
 
     public function __construct($request = [])
     {
         $this->request = $request;
     }
+
 
 }
