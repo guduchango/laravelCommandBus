@@ -14,7 +14,8 @@
         "phpunit/phpunit": "~4.0",
         "phpspec/phpspec": "~2.1",
         "joselfonseca/laravel-tactician" : "0.2.*",
-        "webpatser/laravel-uuid": "2.*"
+        "webpatser/laravel-uuid": "2.*",
+        "neomerx/json-api": "~0.6.0@dev"
     },
     "autoload": {
         "classmap": [
