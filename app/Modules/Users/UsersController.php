@@ -2,7 +2,7 @@
 
 namespace App\Modules\Users;
 
-use Uuid;
+
 use App\User;
 use App\Http\Requests;
 use Illuminate\Http\Request;
