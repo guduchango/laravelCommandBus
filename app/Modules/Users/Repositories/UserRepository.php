@@ -5,29 +5,53 @@ namespace App\Modules\Users\Repositories;
 use App\User;
 use App\Post;
 
+/**
+ * Class UserRepository
+ * @package App\Modules\Users\Repositories
+ */
 class UserRepository implements UserRepositoryInterface
 {
 
+    /**
+     * @var User
+     * User Model
+     */
     protected $user;
 
+    /**
+     * @var Post
+     * Post Model
+     */
     protected $post;
 
+    /**
+     *
+     */
     public function __construct()
     {
+        //Inyecto la instancia de los objetos en las variables
         $this->user = new User();
         $this->post = new Post();
     }
 
+    /**
+     * @param array $userArray
+     * @return mixed
+     */
     public function userSave($userArray=[])
     {
-        $this->user->fill($userArray);
-        return $this->user->save();
+        //Guardo un usuario
+        return $this->user->create($userArray)->id;;
     }
 
-    public function postSave($post=[])
+    /**
+     * @param array $postArray
+     * @return mixed
+     */
+    public function postSave($postArray=[])
     {
-        $this->post->fill($post);
-        return $this->post->save();
+        //Guardo los posts
+        return $this->post->create($postArray)->id;
     }
 
 }
