@@ -1,27 +1,78 @@
-## Laravel PHP Framework
+## Ejemplo de command bus
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+###  Tarea a realizar (Guardar un usuario)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+* Enviar un json que tenga un user y posts que dependan de el
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+* Recibir el request por post interpretarlo y dividirlo en formado de dato que nos sirva
 
-## Official Documentation
+* Guardar el user y luego guardar los posts que dependen de el
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
 
-## Contributing
+### Grafico de ejemplo de formulario a enviar
+![](http://i67.tinypic.com/50l9fr.png)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+###  Json a enviar por post
+`{
+   "data":[
+      {
+         "type":"users",
+         "attributes":{
+            "name": "User Name",
+            "email":"user@example.com",
+         }
+   ],
+   "included":[
+     {
+         "type":"posts",
+         "attributes":{
+            "body":"Body lorem input 1",
+         }
+      },
+      {
+         "type":"posts",
+         "attributes":{
+			"body":"Body lorem input 1",
+         }
+      },
+   ]
+}`
 
-## Security Vulnerabilities
+### Orden de carpetas en laravel
+![](http://i63.tinypic.com/25qdmbl.png)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+### Explicación de cada carpeta
+* __ **App\Helpers\Middlewares**
+* __ __ Aca se alojaran los middlewares genericos que pueden servir para transacciones por ejemplo
+* __ __ **App\Modules**
+* __ __ Aca se dividiran los modulos del proyecto
+* __ __ **App\Modules\Users**
+* __ __ __ **App\Modules\Users\Respositories**
+* __ __ __ __Aca se podran las clases que interactuan con la base de datos de este modulo
+* __ __ __ **App\Modules\Users\UserCommandBus**
+* __ __ __ __Archivos que se usan para el patron de CommandBus (middlewares, Handler, Command)
+* __ __ __ **App\Modules\Users\UserMiddlewares**
+* __ __ __ __ Aca se usaran los midlewares especificos para este modulo
+* __ __ __ **App\Modules\Users\UserExceptions**
+* __ __ __ __Archivos con las excepciones especificas de este modulo
+* __ __ __ **App\Modules\Users\UserController**
+* __ __ __ __ Controlador asignado a este modulo, que se encarga de recivir petisiones y enviar respuestas
 
-### License
+## Hacer funcionar el proyecto
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+`git clone https://github.com/guduchango/laravelCommandBus/`
+
+`cd ./laravelCommandBus`
+
+ > Se debe modificar el archivo .env para conectarse a la base de datos 
+
+`composer install`
+
+`php artisan migrate`
+
+`php artisan db:seed`
+
+### Ejecutar test
+`./vendor/bin/phpunit ./tests/SaveUserPosts`
+
+
