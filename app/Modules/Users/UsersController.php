@@ -8,10 +8,10 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Joselfonseca\LaravelTactician\CommandBusInterface;
-use App\Modules\Users\CommandBus\UserCommand;
-use App\Modules\Users\CommandBus\UserHandler;
-use App\Modules\Users\CommandBus\Middlewares\UserSaveMiddleware;
-use App\Modules\Users\CommandBus\Middlewares\UserRequestMiddleware;
+use App\Modules\Users\UserCommandBus\UserCommand;
+use App\Modules\Users\UserCommandBus\UserHandler;
+use App\Modules\Users\UserCommandBus\UserMiddlewares\UserSaveMiddleware;
+use App\Modules\Users\UserCommandBus\UserMiddlewares\UserRequestMiddleware;
 
 class UsersController extends Controller
 {
@@ -51,13 +51,10 @@ class UsersController extends Controller
            'request' => $request
          ],
          [
-           UserRequestMiddleware::class
+            UserRequestMiddleware::class,
+            UserSaveMiddleware::class
          ]
        );
-
-       print_r($command->user);
-       exit();
-
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Users\CommandBus;
+namespace App\Modules\Users\UserCommandBus;
 
 use App\User;
 
