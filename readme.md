@@ -8,6 +8,9 @@
 
 * Guardar el user y luego guardar los posts que dependen de el
 
+### Base de datos 
+![](http://i64.tinypic.com/2v9ysex.png)
+
 
 ### Grafico de ejemplo de formulario a enviar
 ![](http://i67.tinypic.com/50l9fr.png)
